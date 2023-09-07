@@ -12,5 +12,6 @@ for(int i = 0; i < numbArray.Length; i++)
     while (!(int.TryParse(Console.ReadLine(), out numbArray[i])))
     {Console.Write("Введено не целое число, попробуйте еще раз: ");}
 }
-Console.Write($"max = "+ numbArray.Max());
 
+// Вывод результата
+Console.Write($"max = "+ numbArray.Max());
