@@ -37,4 +37,5 @@ Console.Clear(); // Очистка терминала
 int number = ReadData("Введите положительное число N");
 string sourceString = BuildLine(number,1);
 string resultString = BuildLine(number,2);
-PrintResult(sourceString + " -> " + resultString);
+PrintResult(sourceString + "-> " + resultString);
+
