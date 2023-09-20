@@ -13,7 +13,9 @@ Console.Clear(); // Очистка консоли
 int len = ReadData ("Введите количество элементов в массиве: ");
 int lowerLimit = ReadData ("Введите границу нижнего диапозона: ");
 int upperLimit = ReadData ("Введите границу верхнего диапозона: ");
-int[] array = GenArray(len,lowerLimit,upperLimit);
+
+// Генерация данных и вывод экран
+int[] array = GenerateRandomArray(len, lowerLimit, upperLimit);
 PrintArray(array);
 
 //                                                     Методы
@@ -22,12 +24,11 @@ PrintArray(array);
 int ReadData(string msg)
 {
     Console.Write(msg);
-    int num = int.Parse(Console.ReadLine() ?? "0");
-    return num;
+    return int.Parse(Console.ReadLine() ?? "0");
 }
 
 // Генерация массива
-int[] GenArray(int len, int lowerLimit, int upperLimit)
+int[] GenerateRandomArray(int len, int lowerLimit, int upperLimit)
 {
     int[] array = new int[len];
     Random rnd = new Random();
