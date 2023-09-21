@@ -61,11 +61,11 @@ void FindAndPrintPairs(int[] array)
     // Объявляем словарь <TKey> число, <TValue> будет его индекс в массиве
     Dictionary<int, int> seenNumbers = new Dictionary<int, int>();
 
-    // // Для каждого элемента в массиве проверяется, содержится ли он уже в словаре seenNumbers
+    // Для каждого элемента в массиве проверяется, содержится ли он уже в словаре seenNumbers
     for (int i = 0; i < array.Length; i++)
     {
         if (seenNumbers.ContainsKey(array[i]))
-        {
+        {   
             // Если число содержится в словаре, значит нашли пару. Выводим на экран пару чисел и их адреса в массиве.
             // Само число из словаря удаляем
             Console.WriteLine($"{array[i]},{array[i]} -> [{seenNumbers[array[i]]}], [{i}]");
