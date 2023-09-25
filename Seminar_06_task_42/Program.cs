@@ -31,8 +31,8 @@ string DecimalToBinarySimple(int decimalNumber)
     return Convert.ToString(decimalNumber, 2);
 }
 
-// Рекурентный метод
-string DecToBinRec(int number)
-{
-    return number == 0 ? "" : DecToBin(number / 2) + Convert.ToString(number % 2);
-}
+// // Рекурентный метод
+// string DecToBinRec(int number)
+// {
+//     return number == 0 ? "" : DecToBin(number / 2) + Convert.ToString(number % 2);
+// }

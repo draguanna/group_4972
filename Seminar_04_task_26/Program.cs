@@ -38,13 +38,13 @@ int DigitCountLog( int number)
 }
 
 // Подсчет количества цифр через логарифм
-int DigitCountWhile(int number)
-{
-    int length = 0;
-    while (number > 0)
-    {
-        number /= 10;
-        length++;
-    }
-    return length;
-}
+// int DigitCountWhile(int number)
+// {
+//     int length = 0;
+//     while (number > 0)
+//     {
+//         number /= 10;
+//         length++;
+//     }
+//     return length;
+// }
