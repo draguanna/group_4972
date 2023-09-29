@@ -1,88 +1,102 @@
-﻿using System;
+﻿//------------------------------------------------------------------------------------------------------------------
+//                                                   Задача 50
+//                                          Домашнее задание к семинару 07                                        
+//   Напишите программу, которая на вход принимает позиции элемента в двумерном массиве,и возвращает значение 
+//   этого элемента или же указание, что такого элемента нет  
+//   * Заполнить массив числами фиббоначи.Ту цифру, которую ищем подсветить другим цветом.
+//------------------------------------------------------------------------------------------------------------------
 
-public class Answer
+//                                                 Тело программы
+//------------------------------------------------------------------------------------------------------------------
+Console.Clear();
+// Ввод парметров матрицы.
+int rowCount = ReadInt("Введите количество строк m: ");
+int colCount = ReadInt("Введите количество cтолбцов n: ");
+
+// Генерация матрицы.
+int[,] fibonacciMatrix = GenerateFibonacciMatrix(rowCount, colCount);
+
+// Ввод позиции элемента.
+int rowIndex = ReadInt("Введите индекс элемента по строкам: ");
+int colIndex = ReadInt("Введите индекс элемента по столбцам: ");
+
+// Поиск элемента в матрице и вывод результата.
+int element = FindNumberByPosition(fibonacciMatrix, rowIndex, colIndex);
+PrintResult(element, rowIndex, colIndex);
+
+//                                                     Методы
+//------------------------------------------------------------------------------------------------------------------
+
+// Ввод целого числа с клавиатуры.
+int ReadInt(string msg)
 {
-    public static void PrintArray(int[,] matrix)
-    {
-        // Введите свое решение ниже
-        int m = matrix.GetLength(0);
-        int n = matrix.GetLength(1);
+    Console.Write(msg);
+    return int.Parse(Console.ReadLine() ?? "0");
+}
 
-        for (int i = 0; i < m; i++)
+// Генераци двумервного массива, состоящего из чисел Фибоначчи.
+int[,] GenerateFibonacciMatrix(int rowCount, int colCount)
+{
+    int[,] matrix = new int[rowCount, colCount];
+    int first = 0;
+    int second = 1;
+
+    for (int i = 0; i < rowCount; i++)
+    {
+        for (int j = 0; j < colCount; j++)
         {
-            for (int j = 0; j < n; j++)
-            {
-                Console.Write($"{matrix[i, j]}\t");
-            }
-            Console.WriteLine();
+            matrix[i, j] = first;
+            int temp = first + second;
+            first = second;
+            second = temp;
         }
     }
+    return matrix;
+}
 
-    public static int[,] CreateIncreasingMatrix(int n, int m, int k)
+// Поиск элемента в массиве.
+int FindNumberByPosition(int[,] matrix, int rowPosition, int columnPosition)
+{
+    int result = -1; // Возвращаем если такого элемента нет
+
+    int countRow = matrix.GetLength(0);
+    int countColumn = matrix.GetLength(1);
+
+    if (rowPosition - 1 < countRow && columnPosition - 1 < countColumn)
     {
-        // Введите свое решение ниже
-        int[,] matrix = new int[n, m];
-        int value = 1;
-
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < m; j++)
-            {
-                matrix[i, j] = value;
-                value += k;
-            }
-        }
-        return matrix;
+        result = matrix[rowPosition - 1, columnPosition - 1];
     }
+    return result;
+}
 
-    public static int[] FindNumberByPosition(int[,] matrix, int rowPosition, int columnPosition)
+// Вывод результата на экран.
+void PrintResult(int result, int rowIndex, int colIndex)
+{
+    if (result == -1) { Console.WriteLine("Такой элемент не существует"); }
+    else
     {
-        // Введите свое решение ниже
-        int[] results = new int[2];
-        int n = matrix.GetLength(0);
-        int m = matrix.GetLength(1);
-
-        if ((rowPosition - 1) <= n && (columnPosition - 1) <= m)
-        {
-            results[0] = matrix[rowPosition - 1, columnPosition - 1];
-            results[1] = 0;
-        }
-        return results;
+        Console.WriteLine($"\nЗначение элемента на позиции [{rowIndex}, {colIndex}]: {result}");
+        PrintMatrixWithHighlight(fibonacciMatrix, rowIndex, colIndex);
     }
+}
 
-    public static void PrintCheckIfError(int[] results, int X, int Y)
+// Вывод двумерного массива на экран с подсвеченным элементом.
+void PrintMatrixWithHighlight(int[,] matrix, int rowIndex, int colIndex)
+{
+    int rowCount = matrix.GetLength(0);
+    int colCount = matrix.GetLength(1);
+
+    for (int i = 0; i < rowCount; i++)
     {
-        // Введите свое решение ниже
-        if (results[0] == 0) { Console.WriteLine("There is no such index"); }
-        else { Console.WriteLine($"The number in [{X}, {Y}] is {results[0]}"); }
-    }
+        for (int j = 0; j < colCount; j++)
+        {   
+            // Проверяем является ли элемент искомым и подсвечиваем его
+            if (i == rowIndex - 1 && j == colIndex - 1) { Console.ForegroundColor = ConsoleColor.Yellow; }
+            else { Console.ForegroundColor = ConsoleColor.White; }
 
-    // Не удаляйте и не меняйте метод Main! 
-    static public void Main(string[] args)
-    {
-        int n, m, k, x, y;
-
-        if (args.Length >= 5)
-        {
-            n = int.Parse(args[0]);
-            m = int.Parse(args[1]);
-            k = int.Parse(args[2]);
-            x = int.Parse(args[3]);
-            y = int.Parse(args[4]);
+            Console.Write($"{matrix[i, j],-10} ");
+            Console.ResetColor();
         }
-        else
-        {
-            // Здесь вы можете поменять значения для отправки кода на Выполнение
-            n = 4;
-            m = 5;
-            k = 3;
-            x = 2;
-            y = 2;
-        }
-
-        // Не удаляйте строки ниже
-        int[,] result = CreateIncreasingMatrix(n, m, k);
-        PrintArray(result);
-        PrintCheckIfError(FindNumberByPosition(result, x, y), x, y);
+        Console.WriteLine();
     }
 }
