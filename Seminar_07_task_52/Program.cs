@@ -1,96 +1,102 @@
-﻿using System;
+﻿//------------------------------------------------------------------------------------------------------------------
+//                                                   Задача 52
+//                                          Домашнее задание к семинару 07                                        
+//   Задайте двумерный массив из целых чисел. Найдите среднее арифметическое элементов в каждом столбце. 
+//   * Вывести среднее арифметическое по диагоналям. При выводе матрицы, диагонали окрасить в разные цвета.
+//------------------------------------------------------------------------------------------------------------------
 
-public class Answer
+//                                                 Тело программы
+//------------------------------------------------------------------------------------------------------------------
+Console.Clear();
+// Ввод парметров матрицы.
+int countRow = ReadInt("Введите количество строк m: ");
+int countCol = ReadInt("Введите количество cтолбцов n: ");
+
+// Генерация матрицы 
+int minValue = -10;
+int maxValue = 10;
+int[,] matrix = CreateRandomMatrix(countRow, countCol, minValue, maxValue);
+PrintMatrixWithColoredDiagonals(matrix);
+
+// Находим и выводим среднее арифметическое по диагоналям
+double mainDiagonalAverage = CalculateDiagonalAverage(matrix, true);
+double antiDiagonalAverage = CalculateDiagonalAverage(matrix, false);
+
+Console.WriteLine($"\nСреднее арифметическое по главной диагонали: {mainDiagonalAverage:0.00}");
+Console.WriteLine($"Среднее арифметическое по побочной диагонали: {antiDiagonalAverage:0.00}");
+
+
+//                                                     Методы
+//------------------------------------------------------------------------------------------------------------------
+
+// Ввод целого числа с клавиатуры.
+int ReadInt(string msg)
 {
-    public static void PrintArray(int[,] matrix)
-    {
-        // Введите свое решение ниже
-        int m = matrix.GetLength(0);
-        int n = matrix.GetLength(1);
+    Console.Write(msg);
+    return int.Parse(Console.ReadLine() ?? "0");
+}
 
-        for (int i = 0; i < m; i++)
+// Генераци двумерного массива, заполненного случайными целыми значениями.
+int[,] CreateRandomMatrix(int countRow, int countCol, int minValue, int maxValue)
+{
+    Random random = new Random();
+    int[,] matrix = new int[countRow, countCol];
+
+    for (int i = 0; i < countRow; i++)
+    {
+        for (int j = 0; j < countCol; j++)
         {
-            for (int j = 0; j < n; j++)
-            {
-                Console.Write($"{matrix[i, j]}\t");
-            }
-            Console.WriteLine();
+            matrix[i, j] = random.Next(minValue, maxValue + 1);
         }
     }
+    return matrix;
+}
 
-    public static int[,] CreateIncreasingMatrix(int n, int m, int k)
+// Вывод матрицы с окрашенными диагоналями
+void PrintMatrixWithColoredDiagonals(int[,] matrix)
+{
+    int rowCount = matrix.GetLength(0);
+    int colCount = matrix.GetLength(1);
+
+    for (int i = 0; i < rowCount; i++)
     {
-        // Введите свое решение ниже
-        int[,] matrix = new int[n, m];
-        int value = 1;
-
-        for (int i = 0; i < n; i++)
+        for (int j = 0; j < colCount; j++)
         {
-            for (int j = 0; j < m; j++)
+            if (i == j)
             {
-                matrix[i, j] = value;
-                value += k;
+                Console.ForegroundColor = ConsoleColor.Red; // Главная диагональ - красный цвет
             }
-        }
-        return matrix;
-    }
+            else if (i + j == colCount - 1)
+            {
+                Console.ForegroundColor = ConsoleColor.Blue; // Побочная диагональ - синий цвет
+            }
+            else
+            {
+                Console.ResetColor(); // Сбрасываем цвет
+            }
 
-    static void PrintListAvr(double[] list)
-    {
-        // Введите свое решение ниже
-        Console.WriteLine("The averages in columns are: ");
-
-        foreach (double average in list)
-        {
-            Console.Write($"{average:F2}\t");
+            Console.Write($"{matrix[i, j],4} ");
         }
         Console.WriteLine();
     }
+    Console.ResetColor(); // Сбрасываем цвет
+}
 
-    static double[] FindAverageInColumns(int[,] matrix)
+// Подсчет среднего арифм. в диагоналях
+double CalculateDiagonalAverage(int[,] matrix, bool isMainDiagonal)
+{
+    int rowCount = matrix.GetLength(0);
+    int colCount = matrix.GetLength(1);
+    double sum = 0;
+
+    if (isMainDiagonal) // Если диагональ главная
     {
-        // Введите свое решение ниже
-        int n = matrix.GetLength(0);
-        int m = matrix.GetLength(1);
-        double[] averages = new double[m];
-
-        for (int j = 0; j < m; j++)
-        {
-            int sum = 0;
-            for (int i = 0; i < n; i++)
-            {
-                sum += matrix[i, j];
-            }
-            averages[j] = (double)sum / n;
-        }
-
-        return averages;
-
+        for (int i = 0; i < rowCount; i++) { sum += matrix[i, i]; }
+    }
+    else // Если диагональ побочная
+    {
+        for (int i = 0; i < rowCount; i++) { sum += matrix[i, colCount - 1 - i]; }
     }
 
-
-    // Не удаляйте и не меняйте метод Main! 
-    static public void Main(string[] args)
-    {
-        int n, m, k;
-
-        if (args.Length >= 3)
-        {
-            n = int.Parse(args[0]);
-            m = int.Parse(args[1]);
-            k = int.Parse(args[2]);
-        }
-        else
-        {
-            // Здесь вы можете поменять значения для отправки кода на Выполнение
-            n = 3;
-            m = 4;
-            k = 2;
-        }
-
-        // Не удаляйте строки ниже
-        int[,] result = CreateIncreasingMatrix(n, m, k);
-        PrintArray(result);
-        PrintListAvr(FindAverageInColumns(result));
-    }
+    return sum / rowCount;
 }

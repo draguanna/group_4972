@@ -61,7 +61,7 @@ void PrintMatrix(double[,] matrix)
     }
 }
 
-// Вывод каждого символа случайным цветом.
+// Печать каждого символа случайным цветом.
 void DisplayColoredText(string text)
 {
     foreach (char c in text)
