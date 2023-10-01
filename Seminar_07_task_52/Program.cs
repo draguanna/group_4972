@@ -8,23 +8,26 @@
 //                                                 Тело программы
 //------------------------------------------------------------------------------------------------------------------
 Console.Clear();
+
 // Ввод парметров матрицы.
-int countRow = ReadInt("Введите количество строк m: ");
-int countCol = ReadInt("Введите количество cтолбцов n: ");
+int rowCount = ReadInt("Введите количество строк m: ");
+int colCount = ReadInt("Введите количество cтолбцов n: ");
 
-// Генерация матрицы 
-int minValue = -10;
-int maxValue = 10;
-int[,] matrix = CreateRandomMatrix(countRow, countCol, minValue, maxValue);
-PrintMatrixWithColoredDiagonals(matrix);
+// Генерация матрицы.
+int minValue = 0;
+int maxValue = 9;
+int[,] matrix = CreateRandomMatrix(rowCount, colCount, minValue, maxValue);
 
-// Находим и выводим среднее арифметическое по диагоналям
-double mainDiagonalAverage = CalculateDiagonalAverage(matrix, true);
-double antiDiagonalAverage = CalculateDiagonalAverage(matrix, false);
+// Поиск среднего арифметического по диагоналям.
+double[] averageValues = FindAverages(matrix);
 
-Console.WriteLine($"\nСреднее арифметическое по главной диагонали: {mainDiagonalAverage:0.00}");
-Console.WriteLine($"Среднее арифметическое по побочной диагонали: {antiDiagonalAverage:0.00}");
+// Создание цветового набора для вывода результатов.
+int countDiagonals = matrix.GetLength(1) + matrix.GetLength(0) - 1;
+ConsoleColor[] diagonalsColors = CreateConsoleColorArray(countDiagonals);
 
+// Вывод матрицы и результатов подсчета на экран.
+PrintMatrixColoredDiagonals("\nСгенерированный массив: ", matrix, diagonalsColors);
+AverageValuesOutput(averageValues, diagonalsColors);
 
 //                                                     Методы
 //------------------------------------------------------------------------------------------------------------------
@@ -37,24 +40,71 @@ int ReadInt(string msg)
 }
 
 // Генераци двумерного массива, заполненного случайными целыми значениями.
-int[,] CreateRandomMatrix(int countRow, int countCol, int minValue, int maxValue)
+int[,] CreateRandomMatrix(int rowCount, int colCount, int minValue, int maxValue)
 {
     Random random = new Random();
-    int[,] matrix = new int[countRow, countCol];
+    int[,] matrix = new int[rowCount, colCount];
 
-    for (int i = 0; i < countRow; i++)
+    // Опередление значений массива
+    for (int i = 0; i < rowCount; i++)
     {
-        for (int j = 0; j < countCol; j++)
-        {
-            matrix[i, j] = random.Next(minValue, maxValue + 1);
-        }
+        for (int j = 0; j < colCount; j++)
+        { matrix[i, j] = random.Next(minValue, maxValue + 1); }
     }
+
     return matrix;
 }
 
-// Вывод матрицы с окрашенными диагоналями
-void PrintMatrixWithColoredDiagonals(int[,] matrix)
+// Поиск среднего арифметического каждой диагонали
+double[] FindAverages(int[,] matrix)
 {
+    // Используемые переменные
+    int countDiagonals = matrix.GetLength(1) + matrix.GetLength(0) - 1;
+    int rowCount = matrix.GetLength(0);
+    int colCount = matrix.GetLength(1);
+
+    double[] averageValues = new double[countDiagonals];
+
+    // Поиск среднего арифметического 
+    for (int i = 0; i < countDiagonals; i++)
+    {
+        int sum = 0;
+        int count = 0;
+
+        int col = (i < colCount) ? i : colCount - 1;
+        int row = (i < colCount) ? 0 : i - colCount + 1;
+
+        while (row < rowCount && col >= 0 )
+        {
+            sum += matrix[row, col];
+            count++;
+            col--;
+            row++;
+        }
+
+        averageValues[i] = (double)sum / count;
+    }
+
+    return averageValues;
+}
+
+// Получение набора цветов для дигоналей
+ConsoleColor[] CreateConsoleColorArray(int length)
+{
+    Random random = new Random();
+    ConsoleColor[] colors = (ConsoleColor[])Enum.GetValues(typeof(ConsoleColor));
+
+    // Заполнение массива цветов
+    ConsoleColor[] newColors = new ConsoleColor[length];
+    for (int i = 0; i < length; i++) { newColors[i] = colors[i % colors.Length]; }
+    return newColors;
+}
+
+// Выводит элементы массива в консоль
+void PrintMatrixColoredDiagonals(string message, int[,] matrix, ConsoleColor[] matrixColors)
+{
+    Console.WriteLine(message);
+
     int rowCount = matrix.GetLength(0);
     int colCount = matrix.GetLength(1);
 
@@ -62,41 +112,24 @@ void PrintMatrixWithColoredDiagonals(int[,] matrix)
     {
         for (int j = 0; j < colCount; j++)
         {
-            if (i == j)
-            {
-                Console.ForegroundColor = ConsoleColor.Red; // Главная диагональ - красный цвет
-            }
-            else if (i + j == colCount - 1)
-            {
-                Console.ForegroundColor = ConsoleColor.Blue; // Побочная диагональ - синий цвет
-            }
-            else
-            {
-                Console.ResetColor(); // Сбрасываем цвет
-            }
-
-            Console.Write($"{matrix[i, j],4} ");
+            Console.ForegroundColor = matrixColors[i + j];
+            Console.Write($"{matrix[i, j],4}");
         }
         Console.WriteLine();
     }
-    Console.ResetColor(); // Сбрасываем цвет
+    Console.ResetColor();
 }
 
-// Подсчет среднего арифм. в диагоналях
-double CalculateDiagonalAverage(int[,] matrix, bool isMainDiagonal)
+// Выводит массив со средними значениями
+void AverageValuesOutput(double[] averageValues, ConsoleColor[] matrixColors)
 {
-    int rowCount = matrix.GetLength(0);
-    int colCount = matrix.GetLength(1);
-    double sum = 0;
+    Console.WriteLine();
+    Console.WriteLine("Средние значения диагоналей:");
 
-    if (isMainDiagonal) // Если диагональ главная
+    for (int i = 0; i < averageValues.Length; i++)
     {
-        for (int i = 0; i < rowCount; i++) { sum += matrix[i, i]; }
+        Console.ForegroundColor = matrixColors[i];
+        Console.Write($"[{i}]:{averageValues[i]:F2}  ");
     }
-    else // Если диагональ побочная
-    {
-        for (int i = 0; i < rowCount; i++) { sum += matrix[i, colCount - 1 - i]; }
-    }
-
-    return sum / rowCount;
+    Console.ResetColor();
 }
