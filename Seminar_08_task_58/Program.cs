@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------------------------------------------
 Console.Clear();
 
-// Ввод параметров матриц
+// Ввод параметров матриц.
 int rowCount1, colCount1, rowCount2, colCount2;
 GetMatrixParameters("1-ой матрицы", out rowCount1, out colCount1);
 GetMatrixParameters("2-ой матрицы", out rowCount2, out colCount2);
@@ -24,9 +24,9 @@ int[,] matrix2 = CreateRandomMatrix(rowCount2, colCount2, minValue, maxValue);
 PrintMatrix("\nМатрица 1: ", matrix1);
 PrintMatrix("\nМатрица 2: ", matrix2);
 
-if (IsMatrixConsistent (colCount1, rowCount2 )) // Проверка матрицы на согласованность 
+if (IsMatrixConsistent (colCount1, rowCount2 )) // Проверка матрицы на согласованность.
 {
-    // Получение произведения двух матриц и вывод на экран
+    // Получение произведения двух матриц и вывод на экран.
     int[,] resultMatrix = MatrixMultiplication(matrix1, matrix2);
     PrintMatrix("\nПроизведение двух матриц: ", resultMatrix);
 }
@@ -36,7 +36,7 @@ else
 //                                                     Методы
 //------------------------------------------------------------------------------------------------------------------
 
-//Ввод параметров матрицы
+//Ввод параметров матрицы.
 void GetMatrixParameters(string matrixName, out int rowCount, out int colCount)
 {
     Console.WriteLine($"\nПараметры {matrixName}:");
@@ -51,7 +51,7 @@ int ReadInt(string msg)
     return int.Parse(Console.ReadLine() ?? "0");
 }
 
-// Генераци двумерного массива, заполненного случайными целыми значениями.
+// Генерация двумерного массива, заполненного случайными целыми значениями.
 int[,] CreateRandomMatrix(int rowCount, int colCount, int minValue, int maxValue)
 {
     Random random = new Random();
@@ -83,13 +83,13 @@ void PrintMatrix(string message, int[,] matrix)
     }
 }
 
-// Проверка матрицы на согласовнность
+// Проверка матрицы на согласованность.
  bool IsMatrixConsistent(int colCount1, int rowCount2)
     {
         return colCount1 == rowCount2;
     }
 
-// Произведение двух матриц
+// Произведение двух матриц.
 int[,] MatrixMultiplication(int[,] matrix1, int[,] matrix2)
 {
     int rowCount1 = matrix1.GetLength(0);
@@ -97,7 +97,7 @@ int[,] MatrixMultiplication(int[,] matrix1, int[,] matrix2)
     int colCount2 = matrix2.GetLength(1);
     int[,] resultMatrix = new int[rowCount1, colCount2];
 
-    // Сумма перемножения элементов строк на элементы столбцов
+    // Сумма перемножения элементов строк на элементы столбцов.
     for (int i = 0; i < rowCount1; i++)
     {
         for (int j = 0; j < colCount2; j++)

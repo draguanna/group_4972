@@ -8,11 +8,11 @@
 //------------------------------------------------------------------------------------------------------------------
 Console.Clear();
 
-// Ввод парметров матрицы.
+// Ввод параметров матрицы.
 int rowCount = ReadInt("Введите количество строк m: ");
-int colCount = ReadInt("Введите количество cтолбцов n: ");
+int colCount = ReadInt("Введите количество столбцов n: ");
 
-// Генерация матрицы и вывод на экран
+// Генерация матрицы и вывод на экран.
 int minValue = 0;
 int maxValue = 9;
 int[,] matrix = CreateRandomMatrix(rowCount, colCount, minValue, maxValue);
@@ -31,7 +31,7 @@ int ReadInt(string msg)
     return int.Parse(Console.ReadLine() ?? "0");
 }
 
-// Генераци двумерного массива, заполненного случайными целыми значениями.
+// Генерация двумерного массива, заполненного случайными целыми значениями.
 int[,] CreateRandomMatrix(int rowCount, int colCount, int minValue, int maxValue)
 {
     Random random = new Random();
@@ -63,7 +63,7 @@ void PrintMatrix(string message, int[,] matrix)
     }
 }
 
-// Сортировка элементов в строках матрицы
+// Сортировка элементов в строках матрицы.
 void SortMatrixRows(int[,] matrix)
 {
     int rowCount = matrix.GetLength(0);
@@ -71,12 +71,12 @@ void SortMatrixRows(int[,] matrix)
         { SortRowDesc(matrix, i); }
 }
 
-// Сортировка элементов в строке по убыванию
+// Сортировка элементов в строке по убыванию.
 void SortRowDesc(int[,] matrix, int rowIndex)
 {
     int colCount = matrix.GetLength(1);
 
-    // Используем сортировку вставками для упорядочивания строки
+    // Используем сортировку вставками для упорядочивания строки.
     for (int i = 1; i < colCount; i++)
     {
         int key = matrix[rowIndex, i];
@@ -87,7 +87,7 @@ void SortRowDesc(int[,] matrix, int rowIndex)
             matrix[rowIndex, j + 1] = matrix[rowIndex, j];
             j--;
         }
-        
+
         matrix[rowIndex, j + 1] = key;
     }
 }

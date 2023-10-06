@@ -9,17 +9,17 @@
 //------------------------------------------------------------------------------------------------------------------
 Console.Clear();
 
-// Ввод парметров матрицы.
+// Ввод параметров матрицы.
 int rowCount = ReadInt("Введите количество строк m: ");
-int colCount = ReadInt("Введите количество cтолбцов n: ");
+int colCount = ReadInt("Введите количество столбцов n: ");
 
-// Генерация матрицы и вывод на экран
+// Генерация матрицы и вывод на экран.
 int minValue = -9;
 int maxValue = 9;
 int[,] matrix = CreateRandomMatrix(rowCount, colCount, minValue, maxValue);
 PrintMatrix("\nСгенерированная матрица: ", matrix);
 
-// Поиск строки с наименьшей суммой элементов и вывод результатов
+// Поиск строки с наименьшей суммой элементов и вывод результатов.
 int minSumRowIndex = FindRowWithMinSum(matrix);
 PrintResult(minSumRowIndex);
 
@@ -32,7 +32,7 @@ int ReadInt(string msg)
     return int.Parse(Console.ReadLine() ?? "0");
 }
 
-// Генераци двумерного массива, заполненного случайными целыми значениями.
+// Генерация двумерного массива, заполненного случайными целыми значениями.
 int[,] CreateRandomMatrix(int rowCount, int colCount, int minValue, int maxValue)
 {
     Random random = new Random();
@@ -64,7 +64,7 @@ void PrintMatrix(string message, int[,] matrix)
     }
 }
 
-// Поиск индекса строки с наименьшей суммой элементов
+// Поиск индекса строки с наименьшей суммой элементов.
 int FindRowWithMinSum(int[,] matrix)
 {
     int minSum = int.MaxValue;
@@ -76,12 +76,12 @@ int FindRowWithMinSum(int[,] matrix)
     {
         int rowSum = 0;
 
-        // Суммирвоание элементов строки
+        // Суммирование элементов строки.
         for (int j = 0; j < colCount; j++)
         {
             rowSum += matrix[i, j];
         }
-        // Сравнение с минимальной суммой
+        // Сравнение с минимальной суммой.
         if (rowSum < minSum)
         {
             minSum = rowSum;
@@ -92,7 +92,7 @@ int FindRowWithMinSum(int[,] matrix)
     return minSumRowIndex;
 }
 
-// Вывод результата 
+// Вывод результата.
 void PrintResult(int minSumRowIndex)
 {
     if (minSumRowIndex != -1)
