@@ -49,13 +49,13 @@ int[,] CreateRandomMatrix(int rowCount, int colCount, int minValue, int maxValue
     for (int i = 0; i < rowCount; i++)
     {
         for (int j = 0; j < colCount; j++)
-        { matrix[i, j] = random.Next(minValue, maxValue + 1); }
+            { matrix[i, j] = random.Next(minValue, maxValue + 1); }
     }
 
     return matrix;
 }
 
-// Поиск среднего арифметического каждой диагонали
+// Поиск среднего арифметического каждой диагонали.
 double[] FindAverages(int[,] matrix)
 {
     // Используемые переменные
@@ -65,7 +65,7 @@ double[] FindAverages(int[,] matrix)
 
     double[] averageValues = new double[countDiagonals];
 
-    // Поиск среднего арифметического 
+    // Поиск среднего арифметического.
     for (int i = 0; i < countDiagonals; i++)
     {
         int sum = 0;
@@ -88,19 +88,19 @@ double[] FindAverages(int[,] matrix)
     return averageValues;
 }
 
-// Получение набора цветов для дигоналей
+// Получение набора цветов для дигоналей.
 ConsoleColor[] CreateConsoleColorArray(int length)
 {
     Random random = new Random();
     ConsoleColor[] colors = (ConsoleColor[])Enum.GetValues(typeof(ConsoleColor));
 
-    // Заполнение массива цветов
+    // Заполнение массива цветов.
     ConsoleColor[] newColors = new ConsoleColor[length];
     for (int i = 0; i < length; i++) { newColors[i] = colors[i % colors.Length]; }
     return newColors;
 }
 
-// Выводит элементы массива в консоль
+// Вывод двумерного массива на экран.
 void PrintMatrixColoredDiagonals(string message, int[,] matrix, ConsoleColor[] matrixColors)
 {
     Console.WriteLine(message);
@@ -120,7 +120,7 @@ void PrintMatrixColoredDiagonals(string message, int[,] matrix, ConsoleColor[] m
     Console.ResetColor();
 }
 
-// Выводит массив со средними значениями
+// Вывод средних значений по диагоналям.
 void AverageValuesOutput(double[] averageValues, ConsoleColor[] matrixColors)
 {
     Console.WriteLine();
