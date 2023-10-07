@@ -8,10 +8,10 @@
 Console.Clear();
 
 // Ввод N.
-int n = ReadInt("Задайте количество строк треугольника Паскаля (N): ");
+int countRow = ReadInt("Задайте количество строк треугольника Паскаля (N): ");
 
 // Вывод треугольника Паскаля первые N строк.
-PrintPascalTriangle(n);
+PrintPascalTriangle(countRow);
 
 //                                                     Методы
 //------------------------------------------------------------------------------------------------------------------
@@ -21,35 +21,35 @@ int ReadInt(string msg)
     return int.Parse(Console.ReadLine() ?? "0");
 }
 
-// Метод вывода треугольника Паскаля
-void PrintPascalTriangle(int n)
+//n!/k!*(n-k)!
+long Factoreal(int n)
 {
-    // Cоздание треугольника Паскаля
-    int[][] triangle = new int[n][];
-    for (int i = 0; i < n; i++)
+    long res = 1;
+    for (int i = 1; i <= n; i++)
     {
-        triangle[i] = new int[i + 1];
-        triangle[i][0] = 1;
-        triangle[i][i] = 1;
-
-        for (int j = 1; j < i; j++)
-        {
-            triangle[i][j] = triangle[i - 1][j - 1] + triangle[i - 1][j];
-        }
+        res = res * i;
     }
-    
-    // Вывод треугольника Паскаля
-    int maxLength = triangle[n - 1][n / 2].ToString().Length;
-    for (int i = 0; i < n; i++)
-    {
-        int padding = (n - i - 1) * maxLength;
+    return res;
+}
 
-        for (int j = 0; j < i + 1; j++)
+//           1
+//          1 1
+//         1 2 1
+//        1 3 3 1
+void PrintPascalTriangle(int nRow)
+{
+    for (int i = 0; i < nRow; i++)
+    {
+        for (int k = 0; k < nRow - i; k++)
         {
-            Console.Write(triangle[i][j].ToString().PadLeft(maxLength + padding));
-            if (j < i) Console.Write("\t");
+            Console.Write(" ");
         }
 
+        for (int j = 0; j <= i; j++)
+        {
+            Console.Write(" ");
+            Console.Write(Factoreal(i) / (Factoreal(j) * Factoreal(i - j)));
+        }
         Console.WriteLine();
     }
 }
