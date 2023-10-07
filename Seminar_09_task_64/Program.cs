@@ -25,7 +25,7 @@ int ReadInt(string msg)
     return int.Parse(Console.ReadLine() ?? "0");
 }
 
-// Рекурентный метод печати натуральных чисел от N до 1.
+// Рекуррентный метод печати натуральных чисел от N до 1.
 void PrintNaturalNumbersRec(int num)
 {
     Console.Write(num + " ");
