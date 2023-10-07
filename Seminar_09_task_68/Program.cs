@@ -7,7 +7,7 @@
 //                                                 Тело программы
 //------------------------------------------------------------------------------------------------------------------
 Console.Clear();
-Dictionary<(int, int), int> memoizationCache = new Dictionary<(int, int), int>();
+Dictionary<string, int> memo = new Dictionary<string, int>();
 
 // Ввод данных.
 int m = ReadInt("Введите значение M: ");
@@ -33,7 +33,7 @@ int AckermannFunction(int m, int n)
 {
     if (m == 0) { return n + 1; }
     else if (m > 0 && n == 0) { return AckermannFunction(m - 1, 1); }
-         else { return AckermannFunction(m - 1, AckermannFunction(m, n - 1)); }
+    else { return AckermannFunction(m - 1, AckermannFunction(m, n - 1)); }
 }
 
 // Вычисление функции Аккермана c использованием мемоизации.
@@ -42,20 +42,14 @@ int AckermannFunctionMemo(int m, int n)
     if (m == 0) { return n + 1; }
     else if (m > 0 && n == 0)
     {
-     return memoizationCache.TryGetValue((m - 1, 1), out var cachedResult)
-        ? cachedResult
-        : AckermannFunction(m - 1, 1);
+        string key = $"{m - 1}:{1}";
+        if (!memo.ContainsKey(key)) { memo[key] = AckermannMemo(m - 1, 1); }
+        return memo[key];
     }
-        else
-        {
-            var key = (m, n);
-            if (memoizationCache.TryGetValue(key, out var cachedResult)) 
-               { return cachedResult; }
-            else
-            {
-                var result = AckermannFunction(m - 1, AckermannFunction(m, n - 1));
-                memoizationCache[key] = result;
-                return result;
-            }
-        }
+    else
+    {
+        string key = $"{m - 1}:{n}";
+        if (!memo.ContainsKey(key)) { memo[key] = AckermannMemo(m - 1, AckermannMemo(m, n - 1)); }
+        return memo[key];
+    }
 }
