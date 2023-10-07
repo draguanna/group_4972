@@ -43,13 +43,13 @@ int AckermannFunctionMemo(int m, int n)
     else if (m > 0 && n == 0)
     {
         string key = $"{m - 1}:{1}";
-        if (!memo.ContainsKey(key)) { memo[key] = AckermannMemo(m - 1, 1); }
+        if (!memo.ContainsKey(key)) { memo[key] = AckermannFunctionMemo(m - 1, 1); }
         return memo[key];
     }
     else
     {
         string key = $"{m - 1}:{n}";
-        if (!memo.ContainsKey(key)) { memo[key] = AckermannMemo(m - 1, AckermannMemo(m, n - 1)); }
+        if (!memo.ContainsKey(key)) { memo[key] = AckermannFunctionMemo(m - 1, AckermannFunctionMemo(m, n - 1)); }
         return memo[key];
     }
 }
